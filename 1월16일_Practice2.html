@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticketing Site</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+
+</head>
+<body>
+    <header>
+        <h1>자리 배치도</h1>
+    </header>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const numberOfAttendees = prompt("몇명옴?:");
+            const seatsPerRow = prompt("몇줄임?:");
+
+            const totalAttendees = parseInt(numberOfAttendees, 10);
+            const seatsInRow = parseInt(seatsPerRow, 10);
+
+            if (isNaN(totalAttendees) || isNaN(seatsInRow) || totalAttendees <= 0 || seatsInRow <= 0) {
+                alert("병신이셈?");
+                return;
+            }
+
+            const rows = Math.ceil(totalAttendees / seatsInRow);
+            const table = document.createElement('table');
+            table.border = 1;
+
+            let attendeeCount = 1;
+
+            for (let i = 0; i < rows; i++) {
+                const row = document.createElement('tr');
+                for (let j = 0; j < seatsInRow; j++) {
+                    const cell = document.createElement('td');
+                    if (attendeeCount <= totalAttendees) {
+                        cell.textContent = `Seat ${attendeeCount}`;
+                        attendeeCount++;
+                    } else {
+                        cell.textContent = '';
+                    }
+                    row.appendChild(cell);
+                }
+                table.appendChild(row);
+            }
+
+            document.body.appendChild(table);
+        });
+    </script>
+</body>
+</html>
