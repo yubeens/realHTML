@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문서객체모델</title>
+    <style>
+        #rect{
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            margin: 30px auto;
+            transition: 1s;
+        }
+    </style>
+</head>
+<body>
+    <!-- 문서객체모델 : 웹 문서와 그 안의 모 든 요소를 객체로 인식하고 처리한다. -->
+    <!-- 노드 : DOM트리에서 가지가 갈라져나간 항목 (요소,속성,텍스트) -->
+    <!-- 루트 노드 : DOM트리의 최상위 부분(html) -->
+    <h1>Doit!</h1>
+    <img src="images/10_cat.png" alt="고양이 이미지" id="testImg">
+
+    <!-- DOM요소에 접근하기 -->
+    <!-- 1. getElementById("id명") -id를 가진 요소(객체)를 가져온다. -->
+    <!-- 2. getElementByClassName("class명") -class를 가진 요소(객체)들을 가져온다. -->
+    <!-- 3. getElementByTagName("태그명") -태그명을 가진 요소(객체)들을 가져온다. -->
+    <!-- 4. querySelector("css선택자") - css선택자를 통해 요소를 가져온다. -->
+    <!-- 5. querySelectorAll("css선택자") - css선택자를 통해 요소들을 가져온다. -->
+    <h1 id="heading">에디오피아 게뎁</h1>
+    <div id="detail">
+        <ul>
+            <li class="list01">원산지 : 에디오피아</li>
+            <li class="list01" style="display: none;">지역 : 이르가체프 코체레</li>
+            <li class="list01" style="display: none;">농장 : 게뎁</li>
+        </ul>
+    </div>
+
+    <p>아래의 도형 위로 마우스를 올려보세요.</p>
+    <div id="rect"></div>
+
+
+    <script>
+    //요소 안에 있는 텍스트 내용에 접근 및 수정하기
+    //.innerText : 웹 브라우저 창에 보이는 텍스트 내용
+    //.innerHYML : 보이는 것과 상관없이 HTML태그까지 포함한 텍스트 내용
+    //.textContent : 보이는 것과 상관없이 텍스트 내용만
+        let detail = document.querySelector("#detail > ul");
+        console.log(detail.innerText);
+        console.log(detail.innerHTML);
+        console.log(detail.textContent);
+        detail.innerText = '<p>test</p>'; // 적혀 있는 그대로 텍스트 기준
+        detail.innerHTML = '<p>속의 html 변경</p>'; // html형식으로 적용되어 출력됨.
+        detail.textContent = '<p>속의 html 변경</p>'; // 적혀 있는 그대로 텍스트 기준
+
+    //이미지 파일 경로 변경하기
+    // <img src = '이미지파일경로' alt = '대체텍스트'>
+        let testImg = document.getElementById('testImg');
+        //익명함수처럼 사용해야한다.
+        //매개변수 없는 함수를 사용할 때는 이름만 적어도 된다.
+        
+        // testImg.onclick = changeImg;
+        testImg.onclick = function(){
+            changeImg_src('images/10_2.jpg');
+        }
+
+        function changeImg(){
+            testImg.src = 'images/10_2.jpg';
+        }
+        function changeImg_src(src){
+            testImg.src = src;
+        }
+        testImg.ondblclick = function(event){
+            //책 p.646 event 객체의 주요 프로퍼티
+            //event.target = 이벤트가 발생한 대상을 반환한다.
+            alert(`이벤트 발생 위치 : ${event.pageX}, ${event.pageY}`);
+            alert(`이벤트 발생 위치 : ${event.screenX}, ${event.screenY}`);
+            event.target.src = 'images/10_1.jpg'
+        }
+        //이벤트 등록(addEventListener() 함수 사용)
+        //addEventListener('이벤트명','함수','캡쳐여부'); //false 버블링단계
+        testImg.addEventListener('mouseover',changePic, false);
+        // testImg.addEventListener('mouseover',originPic, false);
+        testImg.addEventListener('mouseout', () => {testImg.src = "images/10_cat.png";}, false);
+
+        function changePic(){
+            testImg.src='images/mic.jpg';
+        }
+        function originPic(){
+            testImg.src = 'images/10_cat.png';
+        }
+
+        //CSS속성 변경하기
+        let rect = document.querySelector("#rect");
+        rect.addEventListener("mouseover", () => {
+            rect.style.backgroundColor = "green";
+            rect.style.borderRadius = "50%";
+        });
+        rect.addEventListener("mouseout", () => {
+            rect.style.backgroundColor = "";
+            rect.style.borderRadius = "";
+        });
+        
+
+    </script>
+</body>
+</html>
